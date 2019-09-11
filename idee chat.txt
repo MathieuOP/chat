@@ -1,0 +1,1 @@
+- Afficher lorsqu'une personne se connecte/deconnecte

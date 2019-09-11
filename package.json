@@ -1,0 +1,16 @@
+{
+  "name": "chat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/MathieuOP/chat.git",
+  "author": "MathieuOP <mathieuoliveirapereira@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "local": "nodemon index.js"
+  },
+  "dependencies": {
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "nodemon": "^1.19.1"
+  }
+}
