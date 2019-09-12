@@ -9,22 +9,20 @@
     <title>Chat - socket.io</title>
 </head>
 <body>
-    <header class="header">
-        <h1 class="header__title"> <%= text %> </h1>
-    </header>
     <main class="main">
         <section class="chat">
             <div class="chat__display">
 
             </div>
             <div class="chat__typing">
-                <form>
+                <form id="form">
                     <input class="chat__input" type="text" name="chat" placeholder="Enter your message"/>
                 </form>
             </div>
         </section>
     </main>
 
+    <script src="/socket.io/socket.io.js"></script>
     <script src="js/main.js"></script>
 </body>
 </html>

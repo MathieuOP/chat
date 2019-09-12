@@ -6,11 +6,12 @@
   "author": "MathieuOP <mathieuoliveirapereira@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "local": "nodemon index.js"
+    "dev": "nodemon app.js"
   },
   "dependencies": {
     "ejs": "^2.7.1",
     "express": "^4.17.1",
-    "nodemon": "^1.19.1"
+    "nodemon": "^1.19.1",
+    "socket.io": "^2.2.0"
   }
 }
