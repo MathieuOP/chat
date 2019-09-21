@@ -1,6 +1,6 @@
 /* body */
 body {
-    background-color: #afb8db;
+    background-color: #333;
     margin: 0;
     padding: 0;
 }
@@ -13,30 +13,120 @@ body {
     transform: translate(-50%, -50%);
 }
 
+/* pseudo */
+.pseudo--hide {
+    display: none;
+}
+
+.pseudo__title {
+    color: #fff;
+    text-align: center;
+    font-size: 2em;
+}
+
+.pseudo__input {
+    text-align: center;
+    width: calc(500px - 20px);
+    font-size: 2em;
+    height: 50px;
+    padding: 10px;
+    border: 0;
+    outline: none;
+    
+}
+
 /* chat */
 .chat {
+    display: none;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 500px;
+}
+
+.chat--show {
+    display: block;
+}
+
+.chat__users {
+    background-color: #fff;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding: 15px;
+    border-bottom: 1px solid #333;
+    background-color: #000;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    position: relative;
+}
+
+.chat__users--active {
+    background-color: #fff;
+}
+
+.chat__number {
+    cursor: pointer;
+}
+
+.chat__displayNumber--hide {
+    display:none;
+}
+
+.chat__displayNumber--show {
+    display: block;
+}
+
+.chat_disconnected {
+    margin: 0;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    font-size: 0.8em;
 }
 
 .chat__display {
-    height: 500px;
-    max-width: 500px;
+    height: 400px;
+    width: 300px;
     background-color: #fff;
     padding: 20px;
     overflow-y: auto;
-    word-break: break-all;
+    word-break: break-word;
+    transition: .5s;
+}
+
+.chat__display--hide {
+    height: 0;
+    padding: 0 20px;
 }
 
 .chat__display::-webkit-scrollbar
 {
 	width: 6px;
-	background-color: #F5F5F5;
+	background-color: #fff;
 }
 
-.chat__display::-webkit-scrollbar-thumb
+.chat__display--active::-webkit-scrollbar-thumb
 {
-	background-color: #000000;
+    background-color: #000;
+    visibility: visible;
+}
+
+.chat__display--hideScroll::-webkit-scrollbar-thumb {
+    visibility: hidden;
+}
+
+.chat__listUserConnected  {
+    background-color: #000;
+    height: 0;
+    width: 300px;
+    transition: .5s;
+    visibility: hidden;
+    padding: 0 20px;
+}
+
+.chat__listUserConnected--show  {
+    visibility: visible;
+    height: 400px;
+    padding: 20px;
 }
 
 .chat__userConnected, .chat__userDisconnected {
@@ -44,14 +134,37 @@ body {
     font-style: italic;
 }
 
-.chat__input {
-    width: calc(500px - 20px);
-    font-size: 2em;
+.chat__message {
+    display: inline-block;
+    background-color: #333;
+    border-radius: 10px;
     padding: 10px;
+    color: #fff;
+    margin-top: 0;
+}
+
+.chat__pseudo {
+    font-weight: bold;
+    margin: 0;
+}
+
+.chat__message, .chat__pseudo {
+    font-size: 1.5em;
+}
+
+.chat__input {
+    width: 310px;
+    font-size: 1.5em;
+    padding: 15px;
     border: 0;
-    border-top: 1px solid #555;
+    border-top: 1px solid #333;
+    outline: none;
 }
 
 .chat__input:focus {
     outline: none;
+}
+
+.fa-comments {
+    color: #000;
 }

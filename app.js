@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io').listen(server);
+let numberUsersConnected = 0;
 
 app.use(express.static('public'))
 
@@ -21,17 +22,20 @@ io.sockets.on('connection', (socket) => {
     
     socket.on('pseudo', (pseudo) => {
         socket.pseudo = pseudo;
-        socket.broadcast.emit('userConnected', socket.pseudo);
+        numberUsersConnected++
+        io.emit('lastUserConnected', { pseudo: socket.pseudo, numberUsersConnected});
     });
 
     socket.on('message', (message) => {
-        console.log(message);
-        socket.broadcast.emit('message', message);
+        (message !== '') && socket.broadcast.emit('message', {message, pseudo: socket.pseudo});
     });
 
     socket.on('disconnect', () => {
-        const userDisconnected = `${socket.pseudo} is disconnected`;
-        socket.broadcast.emit('userDisconnected', userDisconnected);
+        if (socket.pseudo !== undefined) {
+            numberUsersConnected--;
+            const userDisconnected = `Last user disconnected: ${socket.pseudo}`;
+            socket.broadcast.emit('userDisconnected', {userDisconnected, numberUsersConnected});
+        }
     });
 })
 
