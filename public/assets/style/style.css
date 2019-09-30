@@ -37,13 +37,13 @@ body {
 
 /* chat */
 .chat {
-    display: none;
+    /* display: none; */
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
-.chat--show {
+/* .chat--show {
     display: block;
-}
+} */
 
 .chat__users {
     background-color: #fff;
@@ -74,7 +74,7 @@ body {
     display: block;
 }
 
-.chat_disconnected {
+.chat__disconnected {
     margin: 0;
     position: absolute;
     left: 50%;
@@ -114,7 +114,7 @@ body {
     visibility: hidden;
 }
 
-.chat__listUserConnected  {
+.chat__usersConnected  {
     background-color: #000;
     height: 0;
     width: 300px;
@@ -123,15 +123,29 @@ body {
     padding: 0 20px;
 }
 
-.chat__listUserConnected--show  {
+.chat__usersConnected--show  {
     visibility: visible;
     height: 400px;
     padding: 20px;
 }
 
-.chat__userConnected, .chat__userDisconnected {
+.chat__listUsersConnected {
+    margin: 0;
+    list-style-type: none;
+    text-align: center;
+    padding: 0;
+    display: none;
+}
+
+.chat__listUsersConnected--show {
+    display: block;
+}
+
+.chat__userConnected {
     font-weight: bold;
-    font-style: italic;
+    color: #fff;
+    font-size: 1.5em;
+    padding-top: 20px;
 }
 
 .chat__message {

@@ -1,0 +1,27 @@
+<%- include('./templates/tpl.header.ejs'); %>
+    <section class="chat" id="chat">
+        <div id="chatUser" class="chat__users">
+            <p class="chat__number">
+                <i id="iconUser" class="far fa-user fa-2x"></i>
+                <span id="numberUsersConnected" class="chat__displayNumber"></span>
+            </p>
+            <p class="chat__disconnected" id="userDisconnected"></p>
+        </div>
+
+        <div class="chat__display"></div>
+
+        <div id="usersConnected" class="chat__usersConnected">
+            <ul id="listUsersConnected" class="chat__listUsersConnected">
+               <% users.forEach(user => { %>
+                <li class="chat__userConnected"><%= user.name %></li>
+               <% }); %>
+            </ul>
+        </div>
+
+        <div class="chat__typing">
+            <form id="chat__form">
+                <input class="chat__input" type="text" placeholder="Enter your message"/>
+            </form>
+        </div>
+    </section>
+<%- include('./templates/tpl.footer.ejs', { socket: true }) %>

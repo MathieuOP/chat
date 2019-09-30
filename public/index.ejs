@@ -1,45 +1,8 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
-    <link rel="stylesheet" href="assets/style/style.css">
-    <title>Chat - socket.io</title>
-</head>
-<body>
-    <main class="main">
-        <section class="pseudo" id="pseudo">
-            <form id="pseudo__form">
-                <h1 class="pseudo__title">Enter a pseudo to access the chat</h1>
-                <input class="pseudo__input" type="text" placeholder="Enter your pseudo">
-            </form>
-        </section>
-        
-        <section class="chat" id="chat">
-            <div id="chatUser" class="chat__users">
-                <p class="chat__number">
-                    <i id="iconUser" class="far fa-user fa-2x"></i>
-                    <span id="numberUsersConnected" class="chat__displayNumber"></span>
-                </p>
-                <p class="chat_disconnected" id="userDisconnected"></p>
-            </div>
-
-            <div class="chat__display"></div>
-
-            <div id="listUserConnected" class="chat__listUserConnected"></div>
-
-            <div class="chat__typing">
-                <form id="chat__form">
-                    <input class="chat__input" type="text" placeholder="Enter your message"/>
-                </form>
-            </div>
-        </section>
-    </main>
-
-    <script src="https://kit.fontawesome.com/3279e393a6.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="js/main.js"></script>
-</body>
-</html>
+<%- include('./templates/tpl.header.ejs'); %>
+    <section class="pseudo" id="pseudo">
+        <h1 class="pseudo__title">Enter a pseudo to access the chat</h1>
+        <form id="pseudo__form" action="/" method="post">
+            <input class="pseudo__input" name="pseudo" type="text" placeholder="Enter your pseudo">
+        </form>
+    </section>
+<%- include('./templates/tpl.footer.ejs',  { socket: false }) %>

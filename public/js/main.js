@@ -8,77 +8,74 @@ const app = {
 	chatDisplayElement: null,
 	iconUser: null,
 	iconMessage: null,
-	listUserConnected: null,
+	usersConnected: null,
 	init: () => {
-		
 		app.chatDisplayElement = document.querySelector('.chat__display');
 		app.userDisconnected = document.getElementById('userDisconnected');
 		app.numberUsersConnected = document.getElementById('numberUsersConnected');
-		app.listUserConnected = document.getElementById('listUserConnected');
+		app.usersConnected = document.getElementById('usersConnected');
 
 		app.iconUser = document.getElementById('iconUser');
 		app.iconUser.addEventListener('click', app.handleClickUserIcon);
 
-
-		app.chatDisplayElement.addEventListener('scroll', () => {
-			if (app.timer !== null) {
-				clearTimeout(app.timer);
-				
-				app.chatDisplayElement.classList.remove('chat__display--hideScroll');
-				app.chatDisplayElement.classList.add('chat__display--active');
-			}
-
-			app.timer = setTimeout(() => {
-				app.chatDisplayElement.classList.add('chat__display--hideScroll');
-				app.chatDisplayElement.classList.remove('chat__display--active');
-			}, 400);
-		});
+		app.chatDisplayElement.addEventListener('scroll', app.displayTheScrollBar);
 
 		const formChatElement = document.getElementById('chat__form');
 		formChatElement.addEventListener('submit', app.handleFormChatSubmit);
 
-		const formPseudoElement = document.getElementById('pseudo__form');
-		formPseudoElement.addEventListener('submit', app.handleFormPseudoSubmit);
+		app.socket = io.connect('http://localhost:3000/');
+		app.socketsListener();
 	},
 	socketsListener: () => {
 
-		app.socket.on('lastUserConnected', ({pseudo, numberUsersConnected}) => {
+		app.socket.on('lastUserConnected', ({pseudo, numberUsersConnected }) => {
 			app.numberUsersConnected.textContent = numberUsersConnected;
-		})
+		});
 
-		app.socket.on('userDisconnected', ({userDisconnected, numberUsersConnected}) => {
+		app.socket.on('userDisconnected', ({ userDisconnected, numberUsersConnected, currentUser }) => {
+			// console.log(userDisconnected, numberUsersConnected, currentUser);
 
 			app.userDisconnected.style.display = 'block';
 			app.numberUsersConnected.textContent = numberUsersConnected;
 			app.userDisconnected.textContent = `${userDisconnected}`;
+
+			const listUsersConnected = document.getElementById('listUsersConnected');
+			const allUsersConnected = listUsersConnected.childNodes;
+			
+			allUsersConnected.forEach(user => {
+				if (user.textContent === currentUser) {
+					listUsersConnected.removeChild(user);
+				}
+			})
+
 		});
 
 		app.socket.on('message', ({message, pseudo}) => {
 			app.addMessageWithPseudo(pseudo, message);
 			app.scrollbarBottom();
 		});
+
+		app.socket.on('addUserInListUserConnected', ({ pseudo }) => {
+			const ulElement = document.getElementById('listUsersConnected');
+			const liElement = document.createElement('li');
+			liElement.textContent = pseudo;
+			liElement.classList.add('chat__userConnected');
+
+			ulElement.appendChild(liElement);
+		});
 	},
-	handleFormPseudoSubmit: (e) => {
-		e.preventDefault();
-
-		const inputElement = e.currentTarget.children[1];
-		const inputElementValue = inputElement.value;
-
-		if (inputElementValue !== '' && inputElementValue !== undefined) {
+	displayTheScrollBar: () => {
+		if (app.timer !== null) {
+			clearTimeout(app.timer);
 			
-			const sectionPseudoElement = document.getElementById('pseudo');
-			const sectionChatElement = document.getElementById('chat');
-			
-			app.pseudo = inputElementValue;
-			app.socket = io.connect('http://localhost:3000/');
-			app.socket.emit('pseudo', app.pseudo);
-			app.socketsListener();
-
-			sectionPseudoElement.classList.add('pseudo--hide');
-			sectionChatElement.classList.add('chat--show');
-
-			inputElement.value = '';
+			app.chatDisplayElement.classList.remove('chat__display--hideScroll');
+			app.chatDisplayElement.classList.add('chat__display--active');
 		}
+
+		app.timer = setTimeout(() => {
+			app.chatDisplayElement.classList.add('chat__display--hideScroll');
+			app.chatDisplayElement.classList.remove('chat__display--active');
+		}, 400);
 	},
 	handleFormChatSubmit: (e) => {
 		e.preventDefault();
@@ -89,7 +86,7 @@ const app = {
 		if (inputElementValue !== '') {
 			app.socket.emit('message', inputElementValue);
 
-			app.addMessageWithPseudo('Me', inputElementValue);
+			app.addMessageWithPseudo('You', inputElementValue);
 			
 			inputElement.value = '';
 
@@ -132,11 +129,13 @@ const app = {
 			app.iconMessage = document.getElementById('iconMessage');
 			app.iconMessage.addEventListener('click', app.handleClickIconMessage);
 
-			app.listUserConnected.classList.add('chat__listUserConnected--show');
+			app.usersConnected.classList.add('chat__usersConnected--show');
+			app.usersConnected.childNodes[1].classList.add('chat__listUsersConnected--show');
 		}, 500)
 	},
 	handleClickIconMessage: () => {
-		app.listUserConnected.classList.remove('chat__listUserConnected--show');
+		app.usersConnected.classList.remove('chat__usersConnected--show');
+		app.usersConnected.childNodes[1].classList.remove('chat__listUsersConnected--show');
 		
 		setTimeout(() => {
 			chatUser.classList.remove('chat__users--active');
