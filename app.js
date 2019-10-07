@@ -15,7 +15,7 @@ const session = require("express-session")({
 });
 const sharedsession = require("express-socket.io-session");
 
-mongoose.connect('mongodb://localhost/chat', {useNewUrlParser: true,  useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost/chat', { useNewUrlParser: true,  useUnifiedTopology: true });
 
 app.use(express.static('public'))
 
@@ -26,14 +26,11 @@ app.use(express.static('public'))
 .set('view engine', 'ejs')
 
 .get('/', (req, res) => {
-
     res.setHeader('Content-Type', 'text/html');
     res.status('200').render(__dirname + '/public/index.ejs');
 })
 
-
 .get('/chat', (req, res, next) => {
-
     User.find({}, (err, users) => {
         if (!err) {
             res.setHeader('Content-Type', 'text/html');
@@ -69,6 +66,7 @@ io.sockets.on('connection', (socket) => {
     io.emit('lastUserConnected', { pseudo, numberUsersConnected});
     socket.broadcast.emit('addUserInListUserConnected', { pseudo });
 
+
     socket.on('message', (message) => {
         Message.create({sender: pseudo, message}, (err, data) => {
             if (!err) {
@@ -76,6 +74,10 @@ io.sockets.on('connection', (socket) => {
             }
         });
     });
+
+    socket.on('userTyping', ({ message }) => {
+        socket.broadcast.emit('userTyping', { currentUser: pseudo, message });
+    })
 
     socket.on('disconnect', () => {
 
